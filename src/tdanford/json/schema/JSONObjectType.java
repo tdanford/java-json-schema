@@ -2,7 +2,9 @@ package tdanford.json.schema;
 
 import java.util.*;
 
-public JSONObjectType implements JSONType { 
+import org.json.JSONObject;
+
+public class JSONObjectType implements JSONType { 
 
 	private SchemaEnv env;
 	private String name;
