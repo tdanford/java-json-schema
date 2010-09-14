@@ -14,6 +14,7 @@ public class SchemaEnv {
 
 	public SchemaEnv() { 
 		parent = null;
+		types = new TreeMap<String,JSONType>();
 		types.put("string", new JSONType.String());
 		types.put("integer", new JSONType.Integer());
 		types.put("double", new JSONType.Double());

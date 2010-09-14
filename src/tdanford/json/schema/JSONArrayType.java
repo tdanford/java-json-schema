@@ -1,5 +1,7 @@
 package tdanford.json.schema;
 
+import static java.lang.String.*;
+
 import java.util.*;
 
 import org.json.JSONArray;
@@ -41,5 +43,29 @@ public class JSONArrayType implements JSONType {
 		}
 
 		return true;
+	}
+
+	public java.lang.String explain(Object obj) {
+		if(obj == null) { 
+			return format("REJECT: null value");
+		}
+		
+		if(!(obj instanceof JSONArray)) { 
+			return format("REJECT: %s is type %s, not a JSONArray", obj.toString(),
+					obj.getClass().getSimpleName());
+		}
+		
+		JSONArray array = (JSONArray)obj;
+		for(int i = 0; i < array.length(); i++) { 
+			try {
+				if(!itemsType.contains(array.get(i))) { 
+					return itemsType.explain(array.get(i));
+				}
+			} catch (JSONException e) {
+				throw new IllegalArgumentException(array.toString());
+			}
+		}		
+		
+		return null;
 	}
 }

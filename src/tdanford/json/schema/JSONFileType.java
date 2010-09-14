@@ -38,4 +38,9 @@ public class JSONFileType implements JSONType {
 		}
 		return fileType.contains(obj);
 	}
+
+	public java.lang.String explain(Object obj) {
+		if(fileType==null) { loadType(); }
+		return fileType.explain(obj);
+	}
 }
