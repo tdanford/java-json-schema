@@ -56,24 +56,55 @@ public class SchemaEnv {
 		}
 	}
 
+	/**
+	 * Primary entry point to the JSONType parsing framework.
+	 * This method builds JSONType object from the given argument, relative to the 
+	 * bindings in this environment.  String objects in the appropriate places
+	 * are looked up and converted to the corresponding bound JSONType objects.
+	 * 
+	 * Everything else is recursively evaluated, by type.
+	 * 
+	 * @param obj The schema expression, either a String or a JSONObject.
+	 * @throws SchemaException 
+	 * @throws IllegalArgumentException if the supplied argument is null, or if it is not of the correct type.
+	 * @return The JSONType object corresponding to the given schema expression.
+	 */
 	public JSONType evaluate(Object obj) throws SchemaException {
 		try { 
 			if(obj == null) { 
-				throw new SchemaException("null schema object.");
+				throw new IllegalArgumentException("null schema object.");
 
-			} else if(obj instanceof String) { 
-				return lookupType((String)obj);
+			} else if(obj instanceof String) {
+				
+				// String objects are merely looked up in this environment, and returned
+				// if found (or a SchemaException thrown, if not).
+				
+				String name = (String)obj;
+				JSONType type = lookupType(name);
+				if(type == null) { 
+					throw new SchemaException(String.format("Unknown type name \"%s\"", name));
+				}
+				return type;
 
 			} else if (obj instanceof JSONObject) {
 				JSONObject json = (JSONObject)obj;
 				if(json.has("type")) { 
 					String type = json.getString("type").toLowerCase();
-					
-					if(type.equals("array")) { 
-						return new JSONArrayType(this, json);
+
+					if(type.equals("array")) {
+						return new JSONArrayType(new SchemaEnv(this), json);
 						
 					} else if (type.equals("object")) {
-						return new JSONObjectType(this, json);
+						
+						// we pass children of this environment, i.e. 
+						//   new SchemaEnv(this)
+						// rather than just
+						//   this
+						// because JSONObjectType will bind itself into the Schema, and we don't 
+						// want those names to be globally visible -- only local visible to the 
+						// schema's sub-expressions.
+
+						return new JSONObjectType(new SchemaEnv(this), json);
 						
 					} else { 
 						throw new SchemaException(String.format("Unrecognized schema type: %s", type));
@@ -84,9 +115,12 @@ public class SchemaEnv {
 				}
 
 			} else { 
-				throw new SchemaException(obj.getClass().getSimpleName() + " isn't a valid schema type");
+				throw new IllegalArgumentException(obj.getClass().getSimpleName() + " isn't a valid schema type");
 			}
-		} catch(JSONException e) { 
+		} catch(JSONException e) {
+			
+			// Right now, the only time this is thrown is if the JSONObject schema expression
+			// doesn't have a 'type' property.
 			throw new SchemaException(String.valueOf(obj), e);
 		}
 	}

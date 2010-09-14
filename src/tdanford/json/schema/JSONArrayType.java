@@ -28,6 +28,17 @@ public class JSONArrayType implements JSONType {
 		if(obj == null || !(obj instanceof JSONArray)) { 
 			return false; 
 		}
+		
+		JSONArray array = (JSONArray)obj;
+		for(int i = 0; i < array.length(); i++) { 
+			try {
+				if(!itemsType.contains(array.get(i))) { 
+					return false;
+				}
+			} catch (JSONException e) {
+				throw new IllegalArgumentException(array.toString());
+			}
+		}
 
 		return true;
 	}
