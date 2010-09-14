@@ -11,7 +11,7 @@ public class JSONObjectType implements JSONType {
 	private String description;
 	private Map<String,JSONType> properties;
 
-	public JSONObjectType(SchemaEnv env, JSONObject schema) { 
+	public JSONObjectType(SchemaEnv env, JSONObject obj) throws SchemaException { 
 		this.env = env;
 		this.name = null;
 		this.description = null;
