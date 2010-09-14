@@ -108,7 +108,11 @@ public class SchemaEnv {
 						return new JSONObjectType(new SchemaEnv(this), json);
 						
 					} else { 
-						throw new SchemaException(String.format("Unrecognized schema type: %s", type));
+						JSONType tt = lookupType(type);
+						if(tt == null) { 
+							throw new SchemaException(String.format("Unrecognized schema type: %s", type));
+						}
+						return tt;
 					}
 
 				} else { 

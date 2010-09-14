@@ -47,6 +47,32 @@ public class SchemaTests {
 	public static JSONObject test1Fail2() { 
 		return json("{ foo : \"grok\", bar : 3, quux : true }");
 	}
+	
+	public static JSONObjectType test2Schema() throws SchemaException { 
+		return new JSONObjectType(top, 
+				json(
+						"{ " +
+						"  name : \"test2\", " +
+						"  type : \"object\", " +
+						"  properties : { " +
+						"     arr : { " +
+						"        type : \"array\"," +
+						"        items : { type : \"integer\" }," + 
+						"     }," + 
+						"  }" +
+						"}"
+				)
+			);		
+	}
+
+	public static JSONObject test2Succeed() { 
+		return json("{ arr: [ 1, 2, 3 ] }");
+	}
+
+	public static JSONObject test2Fail1() { 
+		return json("{ arr : [ 1, 2, \"grok\" ] }");
+	}
+
 
 	public void checkTrue(SchemaValidator validator, Object value, String schemaName) { 
 		assertTrue(validator.explain(value, schemaName), 
@@ -72,7 +98,6 @@ public class SchemaTests {
 	}
 	
 	
-	
 	@org.junit.Test
 	public void checkJSONTypes() throws SchemaException { 
 		SchemaValidator validator = new SchemaValidator();
@@ -81,5 +106,9 @@ public class SchemaTests {
 		checkTrue(validator, test1Succeed(), "test1");
 		checkFalse(validator, test1Fail1(), "test1");
 		checkFalse(validator, test1Fail2(), "test1");
+		
+		validator.addObjectType(test2Schema());
+		checkTrue(validator, test2Succeed(), "test2");
+		checkFalse(validator, test2Fail1(), "test2");
 	}
 }
