@@ -20,7 +20,13 @@ public class JSONObjectType implements JSONType {
 		this.description = null;
 		properties = new TreeMap<java.lang.String,JSONType>();
 		
+		//System.out.println(format("JSONObjecType parsing: \n%s", obj.toString()));
+		
 		try {
+			if(!obj.has("type")) { 
+				throw new SchemaException(
+						format("Missing required 'type' property in \n%s", obj.toString()));
+			}
 			java.lang.String type = obj.getString("type").toLowerCase(); 
 			if(!type.equals("object")) { 
 				throw new SchemaException(java.lang.String.format(
@@ -105,7 +111,7 @@ public class JSONObjectType implements JSONType {
 			while(keys.hasNext()) { 
 				java.lang.String key = (java.lang.String)keys.next();
 				if(!seen.contains(key)) { 
-					return format("REJECT: unexpected or duplicate key %s", key);
+					return format("REJECT: unexpected or duplicate key \"%s\" in %s", key, json.toString());
 				}
 
 				try { 
