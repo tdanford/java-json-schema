@@ -35,6 +35,7 @@ public class SchemaEnv {
 			Matcher jsMatcher = jsFilenamePattern.matcher(jsFile.getName());
 			if(jsMatcher.matches()) { 
 				String typeName = jsMatcher.group(1);
+				//System.out.println(String.format("Adding file type: %s", typeName));
 				addType(typeName, new JSONFileType(this, jsFile));
 			} else { 
 				throw new IllegalArgumentException(String.format(jsFile.getName()));
@@ -90,7 +91,7 @@ public class SchemaEnv {
 			} else if (obj instanceof JSONObject) {
 				JSONObject json = (JSONObject)obj;
 				if(json.has("type")) { 
-					String type = json.getString("type").toLowerCase();
+					String type = json.getString("type");
 
 					if(type.equals("array")) {
 						return new JSONArrayType(new SchemaEnv(this), json);
@@ -110,7 +111,7 @@ public class SchemaEnv {
 					} else { 
 						JSONType tt = lookupType(type);
 						if(tt == null) { 
-							throw new SchemaException(String.format("Unrecognized schema type: %s", type));
+							throw new SchemaException(String.format("Unrecognized schema type %s in %s", type, json.toString()));
 						}
 						return tt;
 					}
@@ -130,10 +131,12 @@ public class SchemaEnv {
 		}
 	}
 
-	public void addType(String name, JSONType t) { 
+	public void addType(String name, JSONType t) {
+		/*
 		if(types.containsKey(name)) { 
 			throw new IllegalArgumentException(String.format("Type for name %s already exists.", name));
 		}
+		*/
 		types.put(name, t); 
 	}
 
