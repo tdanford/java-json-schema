@@ -10,7 +10,7 @@ public class SchemaValidator {
 	public static void main(String[] args) { 
 		if(args.length != 2) { 
 			System.err.println("USAGE: SchemaValidator <schema-file> <json-value-file>");
-			System.exit();
+			System.exit(1);
 		}
 		try { 
 			File schemaFile = new File(args[0]);
