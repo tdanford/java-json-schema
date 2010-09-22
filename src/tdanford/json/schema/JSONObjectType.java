@@ -70,30 +70,34 @@ public class JSONObjectType implements JSONType {
 		if(obj == null || !(obj instanceof JSONObject)) { 
 			return false; 
 		}
-		
+
 		JSONObject json = (JSONObject)obj;
 		Iterator keys = json.keys();
-		Set<java.lang.String> seen = new TreeSet<java.lang.String>(properties.keySet());
-		
+		Set<java.lang.String> toSee = new TreeSet<java.lang.String>(properties.keySet());
+		Set<java.lang.String> seen = new TreeSet<java.lang.String>();
+
 		while(keys.hasNext()) { 
 			java.lang.String key = (java.lang.String)keys.next();
-			if(!seen.contains(key)) { 
+			if(seen.contains(key)) { 
 				return false;
 			}
 
-			try { 
-				if(!properties.get(key).contains(json.get(key))) { 
-					return false;
+			if(toSee.contains(key)) { 
+				try { 
+					if(!properties.get(key).contains(json.get(key))) { 
+						return false;
+					}
+				} catch(JSONException e) { 
+					throw new IllegalArgumentException(java.lang.String.format(
+							"%s in %s", key, obj.toString()));
 				}
-			} catch(JSONException e) { 
-				throw new IllegalArgumentException(java.lang.String.format(
-						"%s in %s", key, obj.toString()));
+
+				toSee.remove(key);
+				seen.add(key);
 			}
-			
-			seen.remove(key);
 		}
-		
-		if(!seen.isEmpty()) { 
+
+		if(!toSee.isEmpty()) { 
 			return false;
 		}
 
