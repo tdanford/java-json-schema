@@ -125,7 +125,8 @@ public class JSONObjectType extends AbstractType {
 				if(toSee.contains(key)) { 
 					try { 
 						if(!properties.get(key).contains(json.get(key))) { 
-							return properties.get(key).explain(json.get(key));
+							return java.lang.String.format("%s: %s", 
+									key, properties.get(key).explain(json.get(key)));
 						}
 					} catch(JSONException e) { 
 						throw new IllegalArgumentException(java.lang.String.format(
