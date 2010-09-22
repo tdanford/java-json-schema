@@ -13,7 +13,7 @@
 		<mkdir dir="${build}"/>
 	</target>
   
-	<target name="compile" depends="init" description="compile the source " >
+	<target name="build" depends="init" description="compile the source " >
 		<javac destdir="${build}" includeantruntime="false">
 			<src path="${src}" />
 			<classpath>
@@ -27,7 +27,7 @@
 		</javac> 
 	</target>
 
-	<target name="dist" depends="compile" description="generate the java-json-schema.jar" >
+	<target name="jar" depends="build" description="generate the java-json-schema.jar" >
 		<mkdir dir="${dist}/lib"/>
 		<!-- <jar jarfile="${dist}/lib/java-json-schema-${DSTAMP}.jar" basedir="${build}"/> -->
 
