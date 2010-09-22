@@ -9,7 +9,7 @@ public class OptionalType implements JSONType {
 	}
 
 	public boolean contains(Object obj) {
-		return JSONObject.NULL.equals(obj) || innerType.contains(obj);
+		return org.json.JSONObject.NULL.equals(obj) || innerType.contains(obj);
 	}
 
 	public java.lang.String explain(Object obj) {
