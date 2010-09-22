@@ -106,28 +106,33 @@ public class JSONObjectType implements JSONType {
 		} else { 
 			JSONObject json = (JSONObject)obj;
 			Iterator keys = json.keys();
-			Set<java.lang.String> seen = new TreeSet<java.lang.String>(properties.keySet());
+			Set<java.lang.String> toSee = new TreeSet<java.lang.String>(properties.keySet());
+			Set<java.lang.String> seen = new TreeSet<java.lang.String>();
 			
 			while(keys.hasNext()) { 
 				java.lang.String key = (java.lang.String)keys.next();
-				if(!seen.contains(key)) { 
-					return format("REJECT: unexpected or duplicate key \"%s\" in %s", key, json.toString());
+				
+				if(seen.contains(key)) { 
+					return format("REJECT: unexpected duplicate key \"%s\" in %s", key, json.toString());
 				}
 
-				try { 
-					if(!properties.get(key).contains(json.get(key))) { 
-						return properties.get(key).explain(json.get(key));
+				if(toSee.contains(key)) { 
+					try { 
+						if(!properties.get(key).contains(json.get(key))) { 
+							return properties.get(key).explain(json.get(key));
+						}
+					} catch(JSONException e) { 
+						throw new IllegalArgumentException(java.lang.String.format(
+								"%s in %s", key, obj.toString()));
 					}
-				} catch(JSONException e) { 
-					throw new IllegalArgumentException(java.lang.String.format(
-							"%s in %s", key, obj.toString()));
+
+					toSee.remove(key);
+					seen.add(key);
 				}
-				
-				seen.remove(key);
 			}
 			
-			if(!seen.isEmpty()) { 
-				return format("REJECT: missing key(s): %s", seen.toString());
+			if(!toSee.isEmpty()) { 
+				return format("REJECT: missing key(s): %s", toSee.toString());
 			} 
 			
 		}
