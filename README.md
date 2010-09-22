@@ -20,3 +20,13 @@ The simplest way to use the schema is to parse the schema object (int a "type"),
 	}
 
 More involved examples include loading mutually recursive definitions from a directory of files, using the SchemaEnv class. 
+
+Features
+========
+
+A quick outline of some of the features the Validator currently supports (or attempts to support):
+
+  * Schema names, for handling multi-file schema collections,
+  * Supports mutually-recursive top-level schema definitions,
+  * The 'optional' tag for optional fields in JSON objects, and 
+  * an explain() method, which returns descriptions of how a non-validating value actually failed each test.
