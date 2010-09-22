@@ -8,7 +8,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class JSONArrayType implements JSONType { 
+import tdanford.json.schema.JSONType.AbstractType;
+
+public class JSONArrayType extends AbstractType { 
 
 	private SchemaEnv env;
 	private JSONType itemsType;

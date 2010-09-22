@@ -7,7 +7,9 @@ import java.util.*;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class JSONObjectType implements JSONType { 
+import tdanford.json.schema.JSONType.AbstractType;
+
+public class JSONObjectType extends AbstractType { 
 
 	private SchemaEnv env;
 	private java.lang.String name;

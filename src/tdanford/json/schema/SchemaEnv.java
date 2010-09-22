@@ -90,11 +90,14 @@ public class SchemaEnv {
 
 			} else if (obj instanceof JSONObject) {
 				JSONObject json = (JSONObject)obj;
+				boolean optional = json.has("optional") ? json.getBoolean("optional") : false;
+				JSONType specifiedType = null;
+
 				if(json.has("type")) { 
 					String type = json.getString("type");
 
 					if(type.equals("array")) {
-						return new JSONArrayType(new SchemaEnv(this), json);
+						specifiedType = new JSONArrayType(new SchemaEnv(this), json);
 						
 					} else if (type.equals("object")) {
 						
@@ -106,19 +109,21 @@ public class SchemaEnv {
 						// want those names to be globally visible -- only local visible to the 
 						// schema's sub-expressions.
 
-						return new JSONObjectType(new SchemaEnv(this), json);
+						specifiedType = new JSONObjectType(new SchemaEnv(this), json);
 						
 					} else { 
 						JSONType tt = lookupType(type);
 						if(tt == null) { 
 							throw new SchemaException(String.format("Unrecognized schema type %s in %s", type, json.toString()));
 						}
-						return tt;
+						specifiedType = tt;
 					}
 
 				} else { 
 					throw new SchemaException("Schema object doesn't contain a 'types' property.");				
 				}
+				
+				return optional ? new OptionalType(specifiedType) : specifiedType;
 
 			} else { 
 				throw new IllegalArgumentException(obj.getClass().getSimpleName() + " isn't a valid schema type");

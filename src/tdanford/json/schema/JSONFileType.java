@@ -6,7 +6,9 @@ import java.io.*;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class JSONFileType implements JSONType {
+import tdanford.json.schema.JSONType.AbstractType;
+
+public class JSONFileType extends AbstractType {
 	
 	private File file;
 	private JSONType fileType;

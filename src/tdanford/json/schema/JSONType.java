@@ -7,17 +7,18 @@ public interface JSONType {
 	public boolean contains(Object obj);
 	public java.lang.String explain(Object obj);
 	
-	public static class Everything implements JSONType { 
+	public static abstract class AbstractType implements JSONType { 
+		
+		public java.lang.String explain(Object obj) { return null; }
+	}
+	
+	public static class Everything extends AbstractType { 
 		public boolean contains(Object obj) { 
 			return obj != null;
 		}
-
-		public java.lang.String explain(Object obj) {
-			return null;
-		}
 	}
 	
-	public static class Empty implements JSONType { 
+	public static class Empty extends AbstractType { 
 		public boolean contains(Object obj) { 
 			return false;
 		}
@@ -27,7 +28,7 @@ public interface JSONType {
 		}
 	}
 
-	public static class String implements JSONType { 
+	public static class String extends AbstractType { 
 		public boolean contains(Object obj) { 
 			return obj != null && obj instanceof java.lang.String;
 		}
@@ -48,7 +49,7 @@ public interface JSONType {
 		}
 	}
 
-	public static class Integer implements JSONType { 
+	public static class Integer extends AbstractType { 
 		public boolean contains(Object obj) { 
 			if(obj == null) { return false; }
 			if(obj instanceof java.lang.Integer) { return true; }
@@ -71,7 +72,7 @@ public interface JSONType {
 		}
 	}
 
-	public static class Double implements JSONType { 
+	public static class Double extends AbstractType { 
 		public boolean contains(Object obj) { 
 			if(obj == null) { return false; }
 			if(obj instanceof java.lang.Double) { return true; }
@@ -94,7 +95,7 @@ public interface JSONType {
 		}
 	}
 
-	public static class Boolean implements JSONType { 
+	public static class Boolean extends AbstractType { 
 		public boolean contains(Object obj) { 
 			if(obj == null) { return false; }
 			if(obj instanceof java.lang.Boolean) { return true; }
