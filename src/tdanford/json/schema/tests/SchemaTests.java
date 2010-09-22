@@ -36,18 +36,18 @@ public class SchemaTests {
 			);
 	}
 	
-	public static JSONObject test1Succeed() { 
+	public static JSONObject test1Succeed1() { 
 		return json("{ foo : \"grok\", bar : 3 }");
 	}
 
+	public static JSONObject test1Succeed2() { 
+		return json("{ foo : \"grok\", bar : 3, quux : true }");
+	}
+	
 	public static JSONObject test1Fail1() { 
 		return json("{ foo : \"grok\", bar : \"quux\" }");
 	}
 
-	public static JSONObject test1Fail2() { 
-		return json("{ foo : \"grok\", bar : 3, quux : true }");
-	}
-	
 	public static JSONObjectType test2Schema() throws SchemaException { 
 		return new JSONObjectType(top, 
 				json(
@@ -71,6 +71,38 @@ public class SchemaTests {
 
 	public static JSONObject test2Fail1() { 
 		return json("{ arr : [ 1, 2, \"grok\" ] }");
+	}
+
+	public static JSONObjectType test3Schema() throws SchemaException { 
+		return new JSONObjectType(top, 
+				json(
+						"{ " +
+						"  name : \"test3\", " +
+						"  type : \"object\", " +
+						"  properties : { " +
+						"     foo : { " +
+						"        type : \"integer\"," +
+						"     }," +
+						"     bar : { " +
+						"		type : \"integer\"," +
+						"		optional : true," +
+						"	  }," +  
+						"  }" +
+						"}"
+				)
+			);		
+	}
+
+	public static JSONObject test3Succeed1() { 
+		return json("{ foo : 1, bar : 2 }");
+	}
+
+	public static JSONObject test3Succeed2() { 
+		return json("{ foo : 1 }");
+	}
+
+	public static JSONObject test3Fail1() { 
+		return json("{ bar : 2 }");
 	}
 
 
@@ -101,14 +133,19 @@ public class SchemaTests {
 	@org.junit.Test
 	public void checkJSONTypes() throws SchemaException { 
 		SchemaValidator validator = new SchemaValidator();
+
 		validator.addObjectType(test1Schema());
-	
-		checkTrue(validator, test1Succeed(), "test1");
+		checkTrue(validator, test1Succeed1(), "test1");
+		checkTrue(validator, test1Succeed2(), "test1");
 		checkFalse(validator, test1Fail1(), "test1");
-		checkFalse(validator, test1Fail2(), "test1");
 		
 		validator.addObjectType(test2Schema());
 		checkTrue(validator, test2Succeed(), "test2");
 		checkFalse(validator, test2Fail1(), "test2");
+
+		validator.addObjectType(test3Schema());
+		checkTrue(validator, test3Succeed1(), "test3");
+		checkFalse(validator, test3Succeed2(), "test3");
+		checkFalse(validator, test3Fail1(), "test3");
 	}
 }

@@ -8,6 +8,19 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class SchemaEnv { 
+	
+	public static void main(String[] args) { 
+		File dir = new File(args[0]);
+		SchemaEnv env = new SchemaEnv(dir);
+		
+		for(String typeName : env.types.keySet()) {
+			JSONType type = env.types.get(typeName);
+			if(type instanceof JSONFileType) { 
+				JSONFileType fileType = (JSONFileType)env.types.get(typeName);
+				fileType.loadType();
+			}
+		}
+	}
 
 	private SchemaEnv parent;
 	private Map<String,JSONType> types;
@@ -37,6 +50,7 @@ public class SchemaEnv {
 				String typeName = jsMatcher.group(1);
 				//System.out.println(String.format("Adding file type: %s", typeName));
 				addType(typeName, new JSONFileType(this, jsFile));
+				System.out.println(String.format("Added type: %s", typeName));
 			} else { 
 				throw new IllegalArgumentException(String.format(jsFile.getName()));
 			}
@@ -90,6 +104,7 @@ public class SchemaEnv {
 
 			} else if (obj instanceof JSONObject) {
 				JSONObject json = (JSONObject)obj;
+				
 				boolean optional = json.has("optional") ? json.getBoolean("optional") : false;
 				JSONType specifiedType = null;
 
