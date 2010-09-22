@@ -109,6 +109,9 @@ public class JSONObjectType extends AbstractType {
 	public java.lang.String explain(Object obj) {  
 		if (obj == null) { 
 			return format("REJECT: null value");
+		} else if (!(obj instanceof JSONObject)) { 
+			return format("REJECT: value %s has type %s not in JSONObject", 
+					obj.toString(), obj.getClass().getSimpleName());
 		} else { 
 			JSONObject json = (JSONObject)obj;
 			Iterator keys = json.keys();
