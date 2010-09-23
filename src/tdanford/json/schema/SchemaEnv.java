@@ -50,7 +50,7 @@ public class SchemaEnv {
 				String typeName = jsMatcher.group(1);
 				//System.out.println(String.format("Adding file type: %s", typeName));
 				addType(typeName, new JSONFileType(this, jsFile));
-				System.out.println(String.format("Added type: %s", typeName));
+				//System.out.println(String.format("Added type: %s", typeName));
 			} else { 
 				throw new IllegalArgumentException(String.format(jsFile.getName()));
 			}
