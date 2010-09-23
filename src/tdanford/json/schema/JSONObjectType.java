@@ -14,12 +14,14 @@ public class JSONObjectType extends AbstractType {
 	private SchemaEnv env;
 	private java.lang.String name;
 	private java.lang.String description;
+	private boolean isStrict;
 	private Map<java.lang.String,JSONType> properties;
 
 	public JSONObjectType(SchemaEnv env, JSONObject obj) throws SchemaException { 
 		this.env = env;
 		this.name = null;
 		this.description = null;
+		isStrict = false;
 		properties = new TreeMap<java.lang.String,JSONType>();
 		
 		//System.out.println(format("JSONObjecType parsing: \n%s", obj.toString()));
@@ -33,6 +35,10 @@ public class JSONObjectType extends AbstractType {
 			if(!type.equals("object")) { 
 				throw new SchemaException(java.lang.String.format(
 						"Cannot convert expression %s into JSONObjectType", obj.toString()));
+			}
+			
+			if(obj.has("strict")) { 
+				isStrict = obj.getBoolean("isStrict");
 			}
 			
 			if(obj.has("name")) { 
@@ -96,13 +102,17 @@ public class JSONObjectType extends AbstractType {
 
 				toSee.remove(key);
 				seen.add(key);
+				
+			} else if (isStrict) {
+				// 'strict' schemas will fail if there are any extra fields.
+				return false;  
 			}
 		}
 
 		if(!toSee.isEmpty()) { 
 			return false;
 		}
-
+		
 		return true;
 	}
 	
@@ -138,6 +148,10 @@ public class JSONObjectType extends AbstractType {
 
 					toSee.remove(key);
 					seen.add(key);
+				} else if (isStrict) {
+					// 'strict' schemas will fail if there are any extra fields.
+					return java.lang.String.format("REJECT: extra key %s in 'strict' type %s",
+							key, name);
 				}
 			}
 			
