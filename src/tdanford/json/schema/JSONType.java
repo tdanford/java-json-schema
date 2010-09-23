@@ -6,10 +6,12 @@ public interface JSONType {
 
 	public boolean contains(Object obj);
 	public java.lang.String explain(Object obj);
+	public boolean isOptional();
 	
 	public static abstract class AbstractType implements JSONType { 
 		
 		public java.lang.String explain(Object obj) { return null; }
+		public boolean isOptional() { return false; }
 	}
 	
 	public static class Everything extends AbstractType { 

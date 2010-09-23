@@ -38,7 +38,7 @@ public class JSONObjectType extends AbstractType {
 			}
 			
 			if(obj.has("strict")) { 
-				isStrict = obj.getBoolean("isStrict");
+				isStrict = obj.getBoolean("strict");
 			}
 			
 			if(obj.has("name")) { 
@@ -109,8 +109,10 @@ public class JSONObjectType extends AbstractType {
 			}
 		}
 
-		if(!toSee.isEmpty()) { 
-			return false;
+		for(java.lang.String undefinedKey : toSee) {  
+			if(!properties.get(undefinedKey).isOptional()) { 
+				return false;
+			}
 		}
 		
 		return true;
@@ -155,9 +157,12 @@ public class JSONObjectType extends AbstractType {
 				}
 			}
 			
-			if(!toSee.isEmpty()) { 
-				return format("REJECT: missing key(s): %s", toSee.toString());
-			} 
+			for(java.lang.String undefinedKey : toSee) {  
+				if(!properties.get(undefinedKey).isOptional()) { 
+					return format("REJECT: missing non-optional key: %s", 
+							undefinedKey);
+				}
+			}
 			
 		}
 		return null;

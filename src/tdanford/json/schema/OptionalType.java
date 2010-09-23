@@ -16,4 +16,5 @@ public class OptionalType implements JSONType {
 		return innerType.explain(obj);
 	}
 
+	public boolean isOptional() { return true; }
 }
