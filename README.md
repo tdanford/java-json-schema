@@ -4,7 +4,7 @@ Purpose
 
 A validator for JSON objects, using JSON Schema, written in Java.  
 
-http://json-schema.org/
+    <http://json-schema.org/> 
 
 As part of testing another project, a web app, I need to ensure that the responses I get from a web server are complete and well-formed according to JSON schema documents in the requirements.  This library forms a part of the testing harness for that application.  
 

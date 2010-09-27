@@ -7,6 +7,7 @@
 	<property name="build" location="build"/>
 	<property name="dist"  location="dist"/>
 	<property name="lib"  location="lib"/>
+	<property name="latestjar" location="${dist}/lib/java-json-schema.jar" />
 
 	<target name="init">
 		<tstamp/>
@@ -29,9 +30,9 @@
 
 	<target name="jar" depends="build" description="generate the java-json-schema.jar" >
 		<mkdir dir="${dist}/lib"/>
-		<!-- <jar jarfile="${dist}/lib/java-json-schema-${DSTAMP}.jar" basedir="${build}"/> -->
+		<property name="jarpath" location="${dist}/lib/java-json-schema-${DSTAMP}.jar" />
 
-		<jar destfile="${dist}/lib/java-json-schema-${DSTAMP}.jar">
+		<jar destfile="${jarpath}">
 			<fileset dir="${build}/" />
 			<restrict>
 				<name name="**/*.class"/>
@@ -45,6 +46,8 @@
 				<attribute name="Main-Class" value="tdanford.json.schema.test.SchemaTests"/>
 			</manifest>
 		</jar>
+
+		<copy file="${jarpath}" tofile="${latestjar}" />
 	</target>
 
 	<target name="clean" description="clean up" >
