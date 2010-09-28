@@ -2,10 +2,30 @@ package tdanford.json.schema;
 
 import static java.lang.String.*;
 
+/**
+ * JSONType is implemented by classes which represent individual JSON schemas.  A JSONType determines a subset of Objects, through its <tt>contains</tt> method. 
+ *
+ * @author Timothy Danford
+ **/
 public interface JSONType { 
 
+	/**
+	 * The central method of JSONType; the type encompasses the values for which <tt>contains</tt> returns <tt>true</tt>.
+	 *
+	 * @return <tt>true</tt>if the given Object satisfies the type, <tt>false</tt> otherwise.
+	 */
 	public boolean contains(Object obj);
+
+	/**
+	 * Returns a non-null String explanation, suitable for display to a user, explaining why the given object fails to conform to the JSONType's <tt>contains</tt> method.
+	 *
+	 * @return an explanatory string if <tt>contains(arg)</tt> is <tt>false</tt>, or <tt>null</tt> if <tt>contains(arg)</tt> is <tt>true</tt>.
+	 */
 	public java.lang.String explain(Object obj);
+
+	/**
+	 * @return <tt>true</tt> if the type will accept "missing" (i.e. <tt>null</tt>) values, <tt>false</tt> otherwise.
+	 **/
 	public boolean isOptional();
 	
 	public static abstract class AbstractType implements JSONType { 

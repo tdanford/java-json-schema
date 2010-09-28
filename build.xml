@@ -13,6 +13,17 @@
 		<tstamp/>
 		<mkdir dir="${build}"/>
 	</target>
+
+	<target name="docs" depends="init" description="builds documentation" >
+		<mkdir dir="${dist}/docs" />
+		<javadoc sourcepath="${src}" destdir="${dist}/docs" >
+			<classpath>
+				<fileset dir="${lib}">
+					<include name="**/*.jar"/>
+				</fileset>
+			</classpath>
+		</javadoc>
+	</target>
   
 	<target name="build" depends="init" description="compile the source " >
 		<javac destdir="${build}" includeantruntime="false">
