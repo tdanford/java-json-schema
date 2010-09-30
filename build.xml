@@ -3,7 +3,8 @@
 		Build file for the java-json-schema project.
     </description>
 
-	<property name="src" location="src"/>
+	<property name="src" location="src/main"/>
+	<property name="testsrc" location="src/test"/>
 	<property name="build" location="build"/>
 	<property name="dist"  location="dist"/>
 	<property name="lib"  location="lib"/>
@@ -25,13 +26,21 @@
 		</javadoc>
 	</target>
   
+	<target name="buildtests" depends="init" description="compile the source " >
+		<javac destdir="${build}" includeantruntime="false">
+			<src path="${testsrc}" />
+			<classpath>
+				<fileset dir="${lib}">
+					<include name="**/*.jar"/>
+				</fileset>
+			</classpath>
+		</javac> 
+	</target>
+
 	<target name="build" depends="init" description="compile the source " >
 		<javac destdir="${build}" includeantruntime="false">
 			<src path="${src}" />
 			<classpath>
-				<!-- <pathelement path="${classpath}"/> -->
-				<!-- <pathelement location="classes"/> -->
-				<!-- <filelist refid="third-party_jars"/> -->
 				<fileset dir="${lib}">
 					<include name="**/*.jar"/>
 				</fileset>
