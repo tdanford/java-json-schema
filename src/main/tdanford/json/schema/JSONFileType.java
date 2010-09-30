@@ -8,6 +8,18 @@ import org.json.JSONObject;
 
 import tdanford.json.schema.JSONType.AbstractType;
 
+/**
+ * Lazy type loading for JSON schema files.  
+ * 
+ * Objects of this class correspond to files on the filesystem, each given by a {@link java.io.File},
+ * which contain JSON Schema expressions.  However, the JSON schema expression is only loaded and parsed
+ * the first time that either <tt>contains</tt> or <tt>explain</tt> is called on this object: <em>lazy</em> 
+ * loading.  This is so that we can support resolution of mutually-recursive types, from files in a single
+ * directory. 
+ * 
+ * @author Timothy Danford
+ *
+ */
 public class JSONFileType extends AbstractType {
 	
 	private File file;

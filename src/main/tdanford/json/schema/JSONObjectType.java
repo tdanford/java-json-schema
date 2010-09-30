@@ -9,6 +9,23 @@ import org.json.JSONObject;
 
 import tdanford.json.schema.JSONType.AbstractType;
 
+/**
+ * 
+ * Represents a type for {@link org.json.JSONObject} objects.
+ * 
+ * Currently, the object type parser handles the following tags within the object type description: 
+ * <ol>
+ * <li><tt>type</tt></li>
+ * <li><tt>strict</tt> : a custom tag -- if this key's value is <tt>false</tt>, then this JSONObjectType will 
+ * match JSONObject values which contain <em>additional</em> keys not specified in this schema.</li>
+ * <li><tt>name</tt> : this JSONObjectType is inserted into the given SchemaEnv under this string name.</li>
+ * <li><tt>description</tt> : parsed, but unused at the moment.</li>
+ * <li><tt>properties</tt> : required by the JSON schema specs, the "properties" object contains an inner 
+ * object whose keys are the required properties of the object which this JSONObjectType will match.</li>
+ * </ol>
+ * 
+ * @author Timothy Danford
+ */
 public class JSONObjectType extends AbstractType { 
 
 	private SchemaEnv env;

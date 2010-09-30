@@ -3,7 +3,12 @@ package tdanford.json.schema;
 import static java.lang.String.*;
 
 /**
- * JSONType is implemented by classes which represent individual JSON schemas.  A JSONType determines a subset of Objects, through its <tt>contains</tt> method. 
+ * JSONType is implemented by classes which represent individual JSON schemas or types.  
+ *   
+ * A JSONType determines a subset of Objects, through its <tt>contains</tt> method.
+ * 
+ * Given a JSONType, users should call the {@link JSONType.contains} method on values to see if each 
+ * value is in the type.  
  *
  * @author Timothy Danford
  **/
@@ -19,12 +24,14 @@ public interface JSONType {
 	/**
 	 * Returns a non-null String explanation, suitable for display to a user, explaining why the given object fails to conform to the JSONType's <tt>contains</tt> method.
 	 *
+	 * @arg obj A value for which <tt>contains(obj)</tt> returns <tt>false</tt>.
 	 * @return an explanatory string if <tt>contains(arg)</tt> is <tt>false</tt>, or <tt>null</tt> if <tt>contains(arg)</tt> is <tt>true</tt>.
 	 */
 	public java.lang.String explain(Object obj);
 
 	/**
-	 * @return <tt>true</tt> if the type will accept "missing" (i.e. <tt>null</tt>) values, <tt>false</tt> otherwise.
+	 * @return <tt>true</tt> if the type will accept "missing" (i.e. <tt>null</tt>) values, 
+	 * <tt>false</tt> otherwise.
 	 **/
 	public boolean isOptional();
 	
