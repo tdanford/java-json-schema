@@ -3,6 +3,11 @@ package tdanford.json;
 import org.json.*;
 import java.util.*;
 
+/**
+ * Utilities for manipulating and comparing JSON objects and arrays. 
+ * 
+ * @author Timothy Danford
+ **/
 public abstract class JSONUtils { 
 
 	/**

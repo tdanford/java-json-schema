@@ -10,6 +10,13 @@ import org.json.JSONObject;
 
 import tdanford.json.schema.JSONType.AbstractType;
 
+/**
+ * JSONArrayType represents a schema type for a JSON array value.
+ * 
+ * The array type is characterized by the type of its items -- future versions may support optional cardinality constraints on the array as well.
+ * 
+ * @author Timothy Danford
+ **/
 public class JSONArrayType extends AbstractType { 
 
 	private SchemaEnv env;
