@@ -1,4 +1,4 @@
-package tdanford.json.schema.tests;
+package tdanford.json.schema;
 
 import static org.junit.Assert.*;
 
