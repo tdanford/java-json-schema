@@ -8,8 +8,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import tdanford.json.schema.JSONType.AbstractType;
-
 /**
  * JSONArrayType represents a schema type for a JSON array value.
  * 

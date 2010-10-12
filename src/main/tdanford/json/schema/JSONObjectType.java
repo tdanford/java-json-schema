@@ -7,8 +7,6 @@ import java.util.*;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import tdanford.json.schema.JSONType.AbstractType;
-
 /**
  * 
  * Represents a type for {@link org.json.JSONObject} objects.

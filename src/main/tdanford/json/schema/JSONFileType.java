@@ -6,8 +6,6 @@ import java.io.*;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import tdanford.json.schema.JSONType.AbstractType;
-
 /**
  * Lazy type loading for JSON schema files.  
  * 
