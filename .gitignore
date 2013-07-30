@@ -3,6 +3,7 @@
 *.ipr
 *.iws
 build/
+target/
 dist/
 bin/
 .classpath
