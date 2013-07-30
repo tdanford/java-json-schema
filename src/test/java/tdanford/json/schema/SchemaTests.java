@@ -1,10 +1,10 @@
 package tdanford.json.schema;
 
-import static org.junit.Assert.*;
+import org.testng.annotations.*;
+import static org.testng.Assert.*;
 
 import java.io.StringReader;
 import java.util.*;
-import org.junit.*;
 import tdanford.json.schema.*;
 
 import org.json.*;
@@ -107,16 +107,14 @@ public class SchemaTests {
 
 
 	public void checkTrue(SchemaValidator validator, Object value, String schemaName) { 
-		assertTrue(validator.explain(value, schemaName), 
-				validator.validate(value, schemaName));
+		assertTrue(validator.validate(value, schemaName), validator.explain(value, schemaName));
 	}
 	
 	public void checkFalse(SchemaValidator validator, Object value, String schemaName) { 
-		assertFalse(validator.explain(value, schemaName), 
-				validator.validate(value, schemaName));
+		assertFalse(validator.validate(value, schemaName), validator.explain(value, schemaName));
 	}
 	
-	@org.junit.Test 
+	@org.testng.annotations.Test
 	public void checkSimpleTypes() { 
 		SchemaValidator validator = new SchemaValidator();
 		
@@ -130,7 +128,7 @@ public class SchemaTests {
 	}
 	
 	
-	@org.junit.Test
+	@org.testng.annotations.Test
 	public void checkJSONTypes() throws SchemaException { 
 		SchemaValidator validator = new SchemaValidator();
 

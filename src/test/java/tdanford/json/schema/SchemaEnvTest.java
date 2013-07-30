@@ -1,9 +1,7 @@
 package tdanford.json.schema;
 
-import org.junit.Test;
-
-import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.*;
+import org.testng.annotations.*;
+import static org.testng.Assert.*;
 
 public class SchemaEnvTest {
 
@@ -11,13 +9,14 @@ public class SchemaEnvTest {
 	public void simpleBindingTest() { 
 		SchemaEnv env = new SchemaEnv();
 
-		assertThat("No default bindings in SchemaEnv", 
-				env.names().hasNext(), is(true)); 
-		assertThat(env.containsType("foo"), is(false));
-		
+        assertTrue(env.names().hasNext(), "No default bindings in SchemaEnv");
+        assertFalse(env.containsType("foo"));
+
+
 		env.addType("foo", new JSONType.Everything());
-		assertThat(env.containsType("foo"), is(true));
-		assertThat(env.lookupType("foo").contains(null), is(false));
-		assertThat(env.lookupType("foo").contains(false), is(true));
+
+        assertTrue(env.containsType("foo"));
+        assertFalse(env.lookupType("foo").contains(null));
+        assertTrue(env.lookupType("foo").contains(false));
 	}
 }
