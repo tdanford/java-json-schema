@@ -5,11 +5,14 @@ import static org.testng.Assert.*;
 
 import java.io.StringReader;
 import java.util.*;
+
+import org.testng.annotations.*;
 import tdanford.json.schema.*;
 
-import org.json.*;
+import org.json.JSONObject;
+import org.json.JSONException;
 
-public class SchemaTests {
+public class SchemaTest {
 	
 	public static JSONObject json(String input) { 
 		try {
@@ -114,7 +117,7 @@ public class SchemaTests {
 		assertFalse(validator.validate(value, schemaName), validator.explain(value, schemaName));
 	}
 	
-	@org.testng.annotations.Test
+	@Test
 	public void checkSimpleTypes() { 
 		SchemaValidator validator = new SchemaValidator();
 		
@@ -128,7 +131,7 @@ public class SchemaTests {
 	}
 	
 	
-	@org.testng.annotations.Test
+	@Test
 	public void checkJSONTypes() throws SchemaException { 
 		SchemaValidator validator = new SchemaValidator();
 
@@ -143,7 +146,7 @@ public class SchemaTests {
 
 		validator.addObjectType(test3Schema());
 		checkTrue(validator, test3Succeed1(), "test3");
-		checkFalse(validator, test3Succeed2(), "test3");
+		checkTrue(validator, test3Succeed2(), "test3");
 		checkFalse(validator, test3Fail1(), "test3");
 	}
 }
