@@ -4,12 +4,15 @@ import java.util.*;
 import java.util.regex.*;
 import java.io.*;
 
+import org.apache.log4j.Logger;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class SchemaEnv { 
-	
-	public static void main(String[] args) { 
+public class SchemaEnv {
+
+    public static Logger LOG = Logger.getLogger(SchemaEnv.class);
+
+    public static void main(String[] args) {
 		File dir = new File(args[0]);
 		SchemaEnv env = new SchemaEnv(dir);
 		
@@ -36,6 +39,8 @@ public class SchemaEnv {
 	
 	public SchemaEnv(File dir) { 
 		this();
+        LOG.debug(String.format("parsing sschemas in %s", dir.getAbsolutePath()));
+
 		File[] lst = dir.listFiles(new FilenameFilter() {
 			public boolean accept(File dir, String name) {
 				return name.toLowerCase().endsWith(".js");
@@ -46,6 +51,8 @@ public class SchemaEnv {
 		
 		for(File jsFile : lst) { 
 			Matcher jsMatcher = jsFilenamePattern.matcher(jsFile.getName());
+            LOG.debug(String.format("Loading schema in %s", jsFile.getName()));
+
 			if(jsMatcher.matches()) { 
 				String typeName = jsMatcher.group(1);
 				//System.out.println(String.format("Adding file type: %s", typeName));
