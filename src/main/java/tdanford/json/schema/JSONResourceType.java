@@ -1,10 +1,9 @@
 package tdanford.json.schema;
 
-import static java.lang.String.*;
-import java.io.*;
-
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.*;
 
 /**
  * Lazy type loading for JSON schema files.  
@@ -18,33 +17,34 @@ import org.json.JSONObject;
  * @author Timothy Danford
  *
  */
-public class JSONFileType extends AbstractType {
-	
-	private File file;
+public class JSONResourceType extends AbstractType {
+
+	private java.lang.String resource;
 	private JSONType fileType;
 	private SchemaEnv env;
-	
-	public JSONFileType(SchemaEnv env, File f) { 
+
+	public JSONResourceType(SchemaEnv env, java.lang.String resource) {
 		this.env = env;
-		file = f;
+        this.resource = resource;
 		fileType = null;
 	}
 
-    public void loadType(File f) {
+    public void loadType() {
+        ClassLoader loader = getClass().getClassLoader();
         try {
-            FileReader reader = new FileReader(f);
+            Reader reader = new InputStreamReader(loader.getResourceAsStream(this.resource), "UTF-8");
             try {
                 loadType(reader);
             } finally {
                 reader.close();
             }
-        } catch (IOException e) {
-            fileType = new JSONType.Empty();
-            throw new IllegalArgumentException(file.getName(), e);
+        } catch(IOException e) {
+            fileType = new Empty();
+            throw new IllegalArgumentException(resource, e);
         }
     }
 
-    public void loadType(Reader reader) {
+    private void loadType(Reader reader) {
         StringBuilder builder = new StringBuilder();
         char[] buffer = new char[1024];
         int read = -1;
@@ -57,33 +57,27 @@ public class JSONFileType extends AbstractType {
             JSONObject obj = new JSONObject(jsonString);
             fileType = new JSONObjectType(env, obj);
 
-        } catch (IOException e) {
-            fileType = new JSONType.Empty();
-            throw new IllegalArgumentException(file.getName(), e);
+        } catch(IOException e) {
+            fileType = new Empty();
+            throw new IllegalArgumentException(resource, e);
 
         } catch (JSONException e) {
-            fileType = new JSONType.Empty();
-            throw new IllegalArgumentException(file.getName(), e);
+            fileType = new Empty();
+            throw new IllegalArgumentException(resource, e);
 
         } catch (SchemaException e) {
-            fileType = new JSONType.Empty();
-            throw new IllegalArgumentException(file.getName(), e);
+            fileType = new Empty();
+            throw new IllegalArgumentException(resource, e);
         }
     }
-	
-	public void loadType() {
-        loadType(file);
-	}
 
 	public boolean contains(Object obj) {
-		if(fileType==null) { 
-			loadType();
-		}
+        if(fileType == null) { loadType(); }
 		return fileType.contains(obj);
 	}
 
 	public java.lang.String explain(Object obj) {
-		if(fileType==null) { loadType(); }
+        if(fileType == null) { loadType(); }
 		return fileType.explain(obj);
 	}
 }

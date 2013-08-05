@@ -30,3 +30,9 @@ A quick outline of some of the features the Validator currently supports (or att
   * Supports mutually-recursive top-level schema definitions,
   * The 'optional' tag for optional fields in JSON objects, and 
   * an explain() method, which returns descriptions of how a non-validating value actually failed each test.
+
+Changes
+=======
+
+Version 1.0.1
+* Able to read JSONType objects as resources from the classpath
